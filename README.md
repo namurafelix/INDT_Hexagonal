@@ -69,3 +69,49 @@ Seguros.sln
 *   **.Api:** O ponto de entrada. Depende do `.Infrastructure` e `.Application` para configurar a injeção de dependência.
     *   Controllers da API REST.
     *   Configuração de Injeção de Dependência (DI) em `Program.cs`.
+
+## 3. Implementação da Infraestrutura do PropostaService
+
+Nesta etapa, foram implementados os componentes de infraestrutura para o `PropostaService`, seguindo os princípios de DDD e Arquitetura Hexagonal.
+
+*   **`PropostaDbContext.cs`**: Define o contexto do banco de dados usando Entity Framework Core. Mapeia a entidade `Proposta` para a tabela correspondente no banco de dados, configurando suas propriedades e chaves.
+*   **`PropostaRepository.cs`**: Implementa a interface `IPropostaRepository` (definida no domínio), fornecendo a lógica de persistência para a entidade `Proposta`. Utiliza o `PropostaDbContext` para interagir com o banco de dados (operações de adicionar, obter, listar e atualizar).
+*   **`DataSeeder.cs`**: Uma classe estática responsável por popular o banco de dados com dados iniciais, útil para ambientes de desenvolvimento e testes. Garante que os dados sejam inseridos apenas se a tabela estiver vazia.
+*   **`Program.cs` (PropostaService.Api)**: Configurado para:
+    *   Registrar o `PropostaDbContext` com o provedor Npgsql para PostgreSQL, utilizando a string de conexão definida nos arquivos de configuração.
+    *   Registrar as dependências `IPropostaRepository` e `PropostaAppService` para injeção de dependência.
+    *   Aplicar automaticamente as migrações do banco de dados na inicialização da aplicação.
+    *   Executar o `DataSeeder` para popular o banco de dados, mas apenas em ambiente de desenvolvimento.
+*   **`appsettings.Development.json` e `appsettings.Production.json`**: Arquivos de configuração que definem as strings de conexão para os bancos de dados de desenvolvimento e produção, respectivamente. Isso permite configurar diferentes credenciais e hosts para cada ambiente.
+*   **`docker-compose.yml`**: Atualizado para incluir dois serviços de banco de dados PostgreSQL (`proposta-db` e `proposta-db-prod`), permitindo simular ambientes de desenvolvimento e produção com diferentes configurações de acesso.
+
+## 4. Comandos Essenciais
+
+Para gerenciar o ambiente e o banco de dados:
+
+*   **Instalar a ferramenta `dotnet-ef` (se ainda não tiver):**
+    ```bash
+    dotnet tool install --global dotnet-ef
+    ```
+    Este comando instala a ferramenta de linha de comando do Entity Framework Core, necessária para gerenciar migrações.
+
+*   **Gerar a Migração Inicial (após implementar as entidades e o DbContext):**
+    ```bash
+    cd Seguros/src/PropostaService.Api
+    dotnet ef migrations add InitialCreate --context PropostaDbContext --output-dir ../PropostaService.Infrastructure/Migrations
+    ```
+    Este comando cria uma nova migração chamada `InitialCreate` no diretório `PropostaService.Infrastructure/Migrations`, baseada no estado atual do `PropostaDbContext` e suas entidades.
+
+*   **Subir o Ambiente Docker:**
+    ```bash
+    cd Seguros
+    docker-compose up --build
+    ```
+    Este comando constrói as imagens Docker dos serviços (`PropostaService.Api`, `ContratacaoService.Api`) e inicia os contêineres, incluindo os bancos de dados PostgreSQL. As migrações serão aplicadas automaticamente e o banco de dados de desenvolvimento será populado (se `ASPNETCORE_ENVIRONMENT` for `Development`).
+
+*   **Rodar os Testes:**
+    ```bash
+    cd Seguros
+    dotnet test
+    ```
+    Este comando executa todos os testes unitários definidos nos projetos de teste.
