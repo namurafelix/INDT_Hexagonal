@@ -13,13 +13,14 @@ services:
       - seguros-net
 
   contratacao-service:
-    build: ./src/ContratacaoService.Api
+    build:
+      context: ./src/ContratacaoService.Api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
     ports:
       - "5002:80"
     depends_on:
       - contratacao-db
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
     networks:
       - seguros-net
 
@@ -49,12 +50,13 @@ services:
 
   contratacao-db:
     image: postgres:15
+    container_name: contratacao-db
     environment:
       POSTGRES_DB: contratacoes
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     ports:
-      - "5434:5432"
+      - "5435:5432"
     networks:
       - seguros-net
 
