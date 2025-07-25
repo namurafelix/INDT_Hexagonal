@@ -24,7 +24,7 @@ A arquitetura será baseada em microserviços com comunicação explícita, onde
 *   **(Bônus) Message Broker:** Para comunicação assíncrona, um broker como RabbitMQ ou Azure Service Bus poderia ser usado. Por exemplo, quando uma proposta é aprovada, PropostaService publica um evento `PropostaAprovadaEvent`, e ContratacaoService reage a esse evento. Para o teste, a comunicação síncrona via REST é suficiente e mais simples.
 
 ## 2. Estrutura dos Projetos (.NET)
-A organização dos projetos dentro da solution é crucial para refletir a arquitetura
+A organização dos projetos dentro da solution é crucial para refletir a arquitetura. Recomendo a seguinte estrutura para cada microserviço:
 
 ```
 Seguros.sln
@@ -110,7 +110,25 @@ Nesta etapa, o `ContratacaoService` foi inicializado e seus componentes principa
     *   **`Dockerfile`**: Define a imagem Docker para o `ContratacaoService.Api`.
 *   **`docker-compose.yml`**: Atualizado para incluir o serviço `contratacao-service` e seu banco de dados (`contratacao-db`), garantindo que ambos os microserviços possam ser orquestrados juntos.
 
-## 5. Comandos Essenciais
+## 5. Exposição e Documentação das APIs (Controllers e Swagger)
+
+Nesta etapa, os endpoints REST de ambos os serviços foram criados e documentados com Swagger.
+
+*   **`PropostasController.cs` (`PropostaService.Api`)**:
+    *   `POST /api/propostas`: Cria uma nova proposta.
+    *   `GET /api/propostas`: Lista todas as propostas.
+    *   `GET /api/propostas/{id}`: Busca uma proposta por ID.
+    *   `PATCH /api/propostas/{id}/status`: Altera o status de uma proposta (aceita "Aprovada" ou "Recusada").
+*   **`ContratacoesController.cs` (`ContratacaoService.Api`)**:
+    *   `POST /api/contratacoes`: Efetiva a contratação de uma proposta, recebendo o `propostaId` no corpo da requisição.
+*   **Documentação com Swagger**:
+    *   O pacote `Swashbuckle.AspNetCore` foi adicionado a ambos os projetos de API.
+    *   Os serviços foram configurados em `Program.cs` para gerar a documentação Swagger em ambiente de desenvolvimento.
+    *   As APIs podem ser exploradas e testadas através das seguintes URLs:
+        *   **PropostaService**: `http://localhost:5001/swagger`
+        *   **ContratacaoService**: `http://localhost:5002/swagger`
+
+## 6. Comandos Essenciais
 
 Para gerenciar o ambiente e o banco de dados:
 
