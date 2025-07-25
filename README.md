@@ -141,7 +141,18 @@ Foram criados testes unitários para os serviços de aplicação de ambos os mic
     *   Testa a falha na contratação de uma proposta com status diferente de "Aprovada".
     *   Testa o tratamento de erro quando a proposta não é encontrada.
 
-## 7. Comandos Essenciais
+## 7. Testes de Integração
+
+Foram criados testes de integração para ambos os serviços, utilizando xUnit e `WebApplicationFactory`.
+
+*   **`PropostaEndpointsTests.cs`**:
+    *   Testa o fluxo de criação e listagem de propostas através dos endpoints da API.
+*   **`ContratacaoEndpointsTests.cs`**:
+    *   Testa o fluxo de contratação de uma proposta, simulando uma chamada à API do `ContratacaoService`.
+*   **`docker-compose.override.yml`**:
+    *   Arquivo de configuração do Docker Compose para sobrescrever as configurações do ambiente de desenvolvimento, garantindo que os testes de integração sejam executados em um ambiente controlado.
+
+## 8. Comandos Essenciais
 
 Para gerenciar o ambiente e o banco de dados:
 
@@ -177,4 +188,4 @@ Para gerenciar o ambiente e o banco de dados:
     cd Seguros
     dotnet test
     ```
-    Este comando executa todos os testes unitários definidos nos projetos de teste.
+    Este comando executa todos os testes unitários e de integração definidos nos projetos de teste.

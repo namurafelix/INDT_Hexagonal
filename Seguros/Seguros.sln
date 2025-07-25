@@ -27,6 +27,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContratacaoService.UnitTest
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PropostaService.UnitTests", "tests\PropostaService.UnitTests\PropostaService.UnitTests.csproj", "{1E83B8C5-CC90-417B-91E3-E4D5850ABC16}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PropostaService.IntegrationTests", "tests\PropostaService.IntegrationTests\PropostaService.IntegrationTests.csproj", "{A1D66774-52F0-4480-AA74-984432ED8524}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContratacaoService.IntegrationTests", "tests\ContratacaoService.IntegrationTests\ContratacaoService.IntegrationTests.csproj", "{78E1D2DC-A94E-4898-9E1A-0BD6C10BA359}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -76,6 +80,14 @@ Global
 		{1E83B8C5-CC90-417B-91E3-E4D5850ABC16}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1E83B8C5-CC90-417B-91E3-E4D5850ABC16}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1E83B8C5-CC90-417B-91E3-E4D5850ABC16}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1D66774-52F0-4480-AA74-984432ED8524}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1D66774-52F0-4480-AA74-984432ED8524}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1D66774-52F0-4480-AA74-984432ED8524}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1D66774-52F0-4480-AA74-984432ED8524}.Release|Any CPU.Build.0 = Release|Any CPU
+		{78E1D2DC-A94E-4898-9E1A-0BD6C10BA359}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78E1D2DC-A94E-4898-9E1A-0BD6C10BA359}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78E1D2DC-A94E-4898-9E1A-0BD6C10BA359}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78E1D2DC-A94E-4898-9E1A-0BD6C10BA359}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{2F5AE37B-871F-40FE-861C-3C295A7E5C7E} = {F3B34641-9B65-427B-8C52-A93058CF0087}
@@ -88,5 +100,7 @@ Global
 		{BE049333-3112-459F-83C2-156B79CA0D45} = {F3B34641-9B65-427B-8C52-A93058CF0087}
 		{7B62A042-75B6-4CA9-9B40-AA34836EB329} = {BB44194C-7975-499E-A893-B40AAF8EA03D}
 		{1E83B8C5-CC90-417B-91E3-E4D5850ABC16} = {BB44194C-7975-499E-A893-B40AAF8EA03D}
+		{A1D66774-52F0-4480-AA74-984432ED8524} = {BB44194C-7975-499E-A893-B40AAF8EA03D}
+		{78E1D2DC-A94E-4898-9E1A-0BD6C10BA359} = {BB44194C-7975-499E-A893-B40AAF8EA03D}
 	EndGlobalSection
 EndGlobal
