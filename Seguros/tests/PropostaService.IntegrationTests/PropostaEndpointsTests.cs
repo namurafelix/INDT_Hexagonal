@@ -9,11 +9,11 @@ using Microsoft.AspNetCore.Hosting;
 
 namespace PropostaService.IntegrationTests;
 
-public class PropostaEndpointsTests : IClassFixture<WebApplicationFactory<PropostaService.Api.Program>>
+public class PropostaEndpointsTests : IClassFixture<WebApplicationFactory<PropostaService.Api.Controllers.PropostasController>>
 {
     private readonly HttpClient _client;
 
-    public PropostaEndpointsTests(WebApplicationFactory<PropostaService.Api.Program> factory)
+    public PropostaEndpointsTests(WebApplicationFactory<PropostaService.Api.Controllers.PropostasController> factory)
     {
         _client = factory.WithWebHostBuilder(builder =>
         {

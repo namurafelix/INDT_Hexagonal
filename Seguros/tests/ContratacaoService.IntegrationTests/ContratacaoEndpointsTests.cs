@@ -7,11 +7,11 @@ using Microsoft.AspNetCore.Hosting;
 
 namespace ContratacaoService.IntegrationTests;
 
-public class ContratacaoEndpointsTests : IClassFixture<WebApplicationFactory<ContratacaoService.Api.Program>>
+public class ContratacaoEndpointsTests : IClassFixture<WebApplicationFactory<ContratacaoService.Api.Controllers.ContratacoesController>>
 {
     private readonly HttpClient _client;
 
-    public ContratacaoEndpointsTests(WebApplicationFactory<ContratacaoService.Api.Program> factory)
+    public ContratacaoEndpointsTests(WebApplicationFactory<ContratacaoService.Api.Controllers.ContratacoesController> factory)
     {
         _client = factory.WithWebHostBuilder(builder =>
         {
