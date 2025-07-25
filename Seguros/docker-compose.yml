@@ -48,17 +48,5 @@ services:
     networks:
       - seguros-net
 
-  contratacao-db:
-    image: postgres:15
-    container_name: contratacao-db
-    environment:
-      POSTGRES_DB: contratacoes
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-    ports:
-      - "5435:5432"
-    networks:
-      - seguros-net
-
 networks:
   seguros-net:

@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ContratacaoService.Application\ContratacaoService.Application.csproj" />
+    <ProjectReference Include="..\ContratacaoService.Infrastructure\ContratacaoService.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
