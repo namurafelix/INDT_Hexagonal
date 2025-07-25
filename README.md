@@ -128,7 +128,20 @@ Nesta etapa, os endpoints REST de ambos os serviços foram criados e documentado
         *   **PropostaService**: `http://localhost:5001/swagger`
         *   **ContratacaoService**: `http://localhost:5002/swagger`
 
-## 6. Comandos Essenciais
+## 6. Testes Unitários
+
+Foram criados testes unitários para os serviços de aplicação de ambos os microserviços, utilizando xUnit e Moq.
+
+*   **`PropostaAppServiceTests.cs`**:
+    *   Testa a criação de propostas.
+    *   Testa a obtenção de propostas por ID.
+    *   Testa a aprovação e recusa de propostas, incluindo casos de sucesso e falha (ex: tentar aprovar uma proposta já aprovada).
+*   **`ContratacaoAppServiceTests.cs`**:
+    *   Testa a contratação de uma proposta com status "Aprovada".
+    *   Testa a falha na contratação de uma proposta com status diferente de "Aprovada".
+    *   Testa o tratamento de erro quando a proposta não é encontrada.
+
+## 7. Comandos Essenciais
 
 Para gerenciar o ambiente e o banco de dados:
 
