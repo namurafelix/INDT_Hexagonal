@@ -85,7 +85,32 @@ Nesta etapa, foram implementados os componentes de infraestrutura para o `Propos
 *   **`appsettings.Development.json` e `appsettings.Production.json`**: Arquivos de configuração que definem as strings de conexão para os bancos de dados de desenvolvimento e produção, respectivamente. Isso permite configurar diferentes credenciais e hosts para cada ambiente.
 *   **`docker-compose.yml`**: Atualizado para incluir dois serviços de banco de dados PostgreSQL (`proposta-db` e `proposta-db-prod`), permitindo simular ambientes de desenvolvimento e produção com diferentes configurações de acesso.
 
-## 4. Comandos Essenciais
+## 4. Implementação do ContratacaoService
+
+Nesta etapa, o `ContratacaoService` foi inicializado e seus componentes principais foram implementados, seguindo a mesma arquitetura hexagonal e princípios de DDD.
+
+*   **Estrutura de Projetos**: Foram criados os projetos `ContratacaoService.Domain`, `ContratacaoService.Application`, `ContratacaoService.Infrastructure`, `ContratacaoService.Api` e `ContratacaoService.Tests` dentro da solução `Seguros/src/ContratacaoService`, e as referências entre eles foram configuradas.
+*   **Domínio (`ContratacaoService.Domain`)**:
+    *   **`Contratacao.cs`**: Entidade que representa uma contratação, contendo `Id`, `PropostaId` e `DataContratacao`.
+    *   **`IContratacaoRepository.cs`**: Interface de repositório para operações de persistência da entidade `Contratacao`.
+*   **Aplicação (`ContratacaoService.Application`)**:
+    *   **`ContratacaoAppService.cs`**: Serviço de aplicação que orquestra a lógica de negócio para efetivar uma contratação. Ele interage com o repositório de contratações e com o `PropostaService` para verificar o status da proposta.
+    *   **`IPropostaServiceClient.cs`**: Interface que define o contrato para comunicação com o `PropostaService`, permitindo obter o status de uma proposta.
+*   **Infraestrutura (`ContratacaoService.Infrastructure`)**:
+    *   **`ContratacaoDbContext.cs`**: Contexto do Entity Framework Core para o `ContratacaoService`, mapeando a entidade `Contratacao`.
+    *   **`ContratacaoRepository.cs`**: Implementação do `IContratacaoRepository`, utilizando o `ContratacaoDbContext` para persistir os dados da contratação.
+    *   **`PropostaServiceClient.cs`**: Implementação do `IPropostaServiceClient`, utilizando `HttpClient` para realizar chamadas HTTP ao `PropostaService` e obter o status de uma proposta.
+*   **API (`ContratacaoService.Api`)**:
+    *   **`Program.cs`**: Configurado para:
+        *   Registrar o `ContratacaoDbContext` com o provedor Npgsql para PostgreSQL.
+        *   Registrar as dependências `IContratacaoRepository` e `ContratacaoAppService`.
+        *   Configurar o `HttpClient` para `IPropostaServiceClient`, definindo a `BaseUrl` a partir das configurações.
+        *   Aplicar automaticamente as migrações do banco de dados na inicialização.
+    *   **`appsettings.Development.json` e `appsettings.json`**: Arquivos de configuração que definem a string de conexão para o banco de dados do `ContratacaoService` e a URL base para o `PropostaService`.
+    *   **`Dockerfile`**: Define a imagem Docker para o `ContratacaoService.Api`.
+*   **`docker-compose.yml`**: Atualizado para incluir o serviço `contratacao-service` e seu banco de dados (`contratacao-db`), garantindo que ambos os microserviços possam ser orquestrados juntos.
+
+## 5. Comandos Essenciais
 
 Para gerenciar o ambiente e o banco de dados:
 
@@ -95,12 +120,19 @@ Para gerenciar o ambiente e o banco de dados:
     ```
     Este comando instala a ferramenta de linha de comando do Entity Framework Core, necessária para gerenciar migrações.
 
-*   **Gerar a Migração Inicial (após implementar as entidades e o DbContext):**
+*   **Gerar a Migração Inicial para PropostaService:**
     ```bash
     cd Seguros/src/PropostaService.Api
     dotnet ef migrations add InitialCreate --context PropostaDbContext --output-dir ../PropostaService.Infrastructure/Migrations
     ```
     Este comando cria uma nova migração chamada `InitialCreate` no diretório `PropostaService.Infrastructure/Migrations`, baseada no estado atual do `PropostaDbContext` e suas entidades.
+
+*   **Gerar a Migração Inicial para ContratacaoService:**
+    ```bash
+    cd Seguros/src/ContratacaoService.Api
+    dotnet ef migrations add InitialCreate --context ContratacaoDbContext --output-dir ../ContratacaoService.Infrastructure/Migrations
+    ```
+    Este comando cria uma nova migração chamada `InitialCreate` no diretório `ContratacaoService.Infrastructure/Migrations`, baseada no estado atual do `ContratacaoDbContext` e suas entidades.
 
 *   **Subir o Ambiente Docker:**
     ```bash
