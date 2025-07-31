@@ -165,16 +165,17 @@ Para gerenciar o ambiente e o banco de dados:
 *   **Gerar a Migração Inicial para PropostaService:**
     ```bash
     cd Seguros/src/PropostaService.Api
+    dotnet add package Microsoft.EntityFrameworkCore.Design
     dotnet ef migrations add InitialCreate --context PropostaDbContext --output-dir ../PropostaService.Infrastructure/Migrations
     ```
-    Este comando cria uma nova migração chamada `InitialCreate` no diretório `PropostaService.Infrastructure/Migrations`, baseada no estado atual do `PropostaDbContext` e suas entidades.
+    Este comando adiciona o pacote `Microsoft.EntityFrameworkCore.Design` ao projeto `PropostaService.Api` e, em seguida, cria uma nova migração chamada `InitialCreate` no diretório `PropostaService.Infrastructure/Migrations`, baseada no estado atual do `PropostaDbContext` e suas entidades.
 
 *   **Gerar a Migração Inicial para ContratacaoService:**
     ```bash
-    cd Seguros/src/ContratacaoService.Api
-    dotnet ef migrations add InitialCreate --context ContratacaoDbContext --output-dir ../ContratacaoService.Infrastructure/Migrations
+    cd Seguros/src/ContratacaoService.Infrastructure
+    dotnet ef migrations add InitialCreate --context ContratacaoDbContext --output-dir Migrations --startup-project ../ContratacaoService.Api
     ```
-    Este comando cria uma nova migração chamada `InitialCreate` no diretório `ContratacaoService.Infrastructure/Migrations`, baseada no estado atual do `ContratacaoDbContext` e suas entidades.
+    Este comando cria uma nova migração chamada `InitialCreate` no diretório `ContratacaoService.Infrastructure/Migrations`, baseada no estado atual do `ContratacaoDbContext` e suas entidades, especificando o projeto de startup.
 
 *   **Subir o Ambiente Docker:**
     ```bash

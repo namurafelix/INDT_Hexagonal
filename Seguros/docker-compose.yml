@@ -1,8 +1,10 @@
 version: '3.4'
 
 services:
-  proposta-service:
-    build: ./src/PropostaService.Api
+  proposta-api:
+    build:
+      context: .
+      dockerfile: ./src/PropostaService.Api/Dockerfile
     ports:
       - "5001:80"
     depends_on:
@@ -12,9 +14,10 @@ services:
     networks:
       - seguros-net
 
-  contratacao-service:
+  contratacao-api:
     build:
-      context: ./src/ContratacaoService.Api
+      context: .
+      dockerfile: ./src/ContratacaoService.Api/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     ports:
@@ -35,6 +38,11 @@ services:
       - "5433:5432"
     networks:
       - seguros-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   proposta-db-prod:
     image: postgres:15
@@ -48,5 +56,51 @@ services:
     networks:
       - seguros-net
 
+  contratacao-db:
+    image: postgres:15
+    container_name: contratacao-db
+    environment:
+      POSTGRES_DB: contratacoes
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5435:5432"
+    networks:
+      - seguros-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  adminer:
+    image: adminer
+    ports:
+      - "8081:8080"
+    networks:
+      - seguros-net
+
+  migration-runner:
+    image: mcr.microsoft.com/dotnet/sdk:8.0
+    container_name: migration-runner
+    volumes:
+      - .:/app
+    working_dir: /app
+    depends_on:
+      proposta-db:
+        condition: service_healthy
+      contratacao-db:
+        condition: service_healthy
+    command: >
+      bash -c "
+      dotnet tool install --global dotnet-ef --version 8.0.0 &&
+      export PATH=\"$PATH:/root/.dotnet/tools\" &&
+      dotnet ef database update --project src/ContratacaoService.Infrastructure/ContratacaoService.Infrastructure.csproj --startup-project src/ContratacaoService.Api/ContratacaoService.Api.csproj &&
+      dotnet ef database update --project src/PropostaService.Infrastructure/PropostaService.Infrastructure.csproj --startup-project src/PropostaService.Api/PropostaService.Api.csproj
+      "
+    networks:
+      - seguros-net
+
 networks:
   seguros-net:
+    driver: bridge
